@@ -1,3 +1,4 @@
+import json
 import logging
 import os
 from http import HTTPStatus
@@ -5,6 +6,7 @@ from flask import request, Blueprint
 from magen_logger.logger_config import LogDefaults
 from magen_rest_apis.rest_server_apis import RestServerApis
 from magen_utils_apis.domain_resolver import inside_docker
+from github3 import login, GitHub
 
 project_root = os.path.dirname(__file__)
 template_path = os.path.join(project_root, 'templates')
@@ -44,7 +46,17 @@ def appguard_ci_event_handler():
 
     :return: A dictionary with the proper HTTP error code plus other metadata
     """
+
+    token = os.environ['GITHUB_TOKEN']
+    g = login(token=token)
     post_headers = request.headers
-    postdata = request.get_data()
-    postJson = request.get_json(force=True)
+    if post_headers.environ["HTTP_X_GITHUB_EVENT"] == 'push':
+        print("push")
+        postdata = request.form
+        postjson = json.loads(postdata["payload"])
+        #commit_url = postjson["head_commit"]["url"]
+        repo_id = postjson["repository"]["id"]
+        repo = g.repository_with_id(repo_id)
+        commit_sha = postjson["head_commit"]["id"]
+        repo.create_status(sha=commit_sha, state="pending", description="AppGuard Verification", context="default")
     return "ok", HTTPStatus.OK
