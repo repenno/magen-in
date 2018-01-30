@@ -1,0 +1,24 @@
+# run docker image using installed wheel pkg, not source: mount /opt/svc for cfg/logs
+# ("runpkg" vs "rundev")
+
+version: "2"
+services:
+  magen_ingestion:
+    build: .
+    image: appguard_ci_service:v1.0
+    container_name: magen_ingestion
+    command: bash -c "appguard_ci_server.py --data-dir /opt/svc/data --console-log-level 'info' --log-dir 'appguard_ci_logs' 2>&1 >> appguard_ci_server.log"
+    ports:
+      - "443:6020"
+      - "6020:6020"
+    volumes:
+      - ~/magen_data/ingestion/:/opt/svc/
+    stdin_open: true
+    tty: true
+    networks:
+      - default
+
+networks:
+  default:
+    external:
+      name: magen_net

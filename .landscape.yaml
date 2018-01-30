@@ -8,7 +8,7 @@ autodetect: true
 ignore-paths:
   - postman
   - lib
-  - ingestion/docs
-  - ingestion/docker_ingestion
+  - appguard_ci/docs
+  - appguard_ci/docker_appguard_ci
 python-targets:
   - 3

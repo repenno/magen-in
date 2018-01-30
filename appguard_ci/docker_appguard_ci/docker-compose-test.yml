@@ -1,0 +1,15 @@
+version: "2"
+services:
+  ingestion_test:
+    image: appguard_ci_service:v1.0
+    container_name: appguard_ci_service_test
+    command: bash -c "make test_travis"
+    ports:
+      - "6020:6020"
+    volumes:
+      - ../..:/opt/server
+    depends_on:
+      - magen_mongo
+    environment:
+     - TRAVIS
+

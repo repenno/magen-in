@@ -71,7 +71,7 @@ default:
 ## Adopt this Infrastructure
 
 1. get [**helper_scripts**](ingestion/helper_scripts) to the repo
-2. follow the structure in [**docker_ingestion**](ingestion/docker_ingestion) to create ```docker-compose.yml``` and ```Dockerfile``` files
+2. follow the structure in [**docker_ingestion**](ingestion/docker_appguard_ci) to create ```docker-compose.yml``` and ```Dockerfile``` files
 3. use [**Makefile**](ingestion/Makefile) as an example for building make automation
 
 ## Sphinx Documentation SetUp
